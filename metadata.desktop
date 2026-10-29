@@ -1,0 +1,13 @@
+[SddmGreeterTheme]
+Name=Lily
+Description=毛玻璃风格 Plasma 6 登录主题
+Author=Lily
+License=GPL-3.0-or-later
+Type=sddm-theme
+Version=0.2.2
+MainScript=Main.qml
+ConfigFile=theme.conf
+Theme-Id=lily-sddm-plasma6
+Theme-API=2.0
+QtVersion=6
+Screenshot=assets/preview.png

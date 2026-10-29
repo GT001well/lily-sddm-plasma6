@@ -1,0 +1,22 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: Lily SDDM
+
+Files: *
+Copyright: 2026 Lily
+License: GPL-3.0-or-later
+ This package is free software: you can redistribute it and/or modify it
+ under the terms of the GNU General Public License as published by the Free
+ Software Foundation, either version 3 of the License, or (at your option)
+ any later version.
+ .
+ On Debian systems, the complete license text is available at
+ /usr/share/common-licenses/GPL-3.
+
+Files: assets/wallpaper.webp
+ assets/avatar.webp
+ assets/avatar-circle.webp
+Copyright: External material; provenance not recorded
+License: external-asset-license
+ The licensing and redistribution terms of these image assets have not been
+ established by the upstream project. Distribution outside a private build
+ requires confirmation from the asset authors.

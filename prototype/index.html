@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <title>Lily SDDM 布局原型</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./app.js" defer></script>
+</head>
+<body>
+    <div class="wallpaper" aria-hidden="true"></div>
+
+    <main class="login-canvas">
+        <section class="glass-rail" aria-label="账户登录">
+            <div class="login-content">
+                <div class="identity">
+                    <span class="avatar-frame">
+                        <img id="active-avatar" src="../assets/avatar.webp"
+                             alt="lily 的系统头像" width="88" height="88">
+                        <span class="avatar-fallback" id="avatar-fallback" aria-hidden="true">G</span>
+                    </span>
+                    <div class="identity-copy">
+                        <strong class="user-name" id="active-user-name">lily</strong>
+                        <span class="identity-divider" aria-hidden="true"></span>
+                        <span class="identity-greeting" id="greeting">早上好</span>
+                    </div>
+                </div>
+
+                <form class="login-form" id="login-form">
+                    <div class="password-field">
+                        <label class="sr-only" for="password">密码</label>
+                        <div class="password-line">
+                            <input id="password" name="password" type="password"
+                                   autocomplete="current-password" placeholder="密码" required>
+                            <button class="reveal-button" id="reveal-password" type="button"
+                                    aria-label="显示密码" aria-pressed="false">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6S2.5 12 2.5 12Z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path class="eye-slash" d="M4 4l16 16"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button class="login-action" type="submit">
+                        <span>登录</span>
+                    </button>
+
+                    <p class="login-status" id="login-status" role="status" aria-live="polite">
+                        <span id="status-text"></span>
+                    </p>
+                </form>
+
+                <nav class="utility-actions" aria-label="系统操作">
+                    <button class="quiet-action" type="button" data-power="sleep">
+                        <span class="utility-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M20 15.2A8.5 8.5 0 0 1 8.8 4a8.5 8.5 0 1 0 11.2 11.2Z"/>
+                            </svg>
+                        </span>
+                        <span>睡眠</span>
+                    </button>
+                    <button class="quiet-action" type="button" data-power="restart">
+                        <span class="utility-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M21 12a9 9 0 1 1-3-6.7"/>
+                                <path d="M21 3v5h-5"/>
+                            </svg>
+                        </span>
+                        <span>重启</span>
+                    </button>
+                    <button class="quiet-action" type="button" data-power="power">
+                        <span class="utility-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 3v9m6.36-5.36a9 9 0 1 1-12.72 0"/>
+                            </svg>
+                        </span>
+                        <span>关机</span>
+                    </button>
+                </nav>
+            </div>
+        </section>
+
+        <section class="clock-block" aria-label="当前时间">
+            <time id="clock" datetime="">00:00</time>
+        </section>
+    </main>
+
+    <footer class="session-strip">
+        <div class="footer-left">
+            <div class="user-switch">
+                <button class="footer-trigger footer-user-trigger user-trigger" id="user-trigger"
+                        type="button" aria-expanded="false" aria-controls="user-menu"
+                        aria-haspopup="menu">
+                    <svg class="footer-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8m10 0 3 3m0 0-3 3m3-3h-7"/>
+                    </svg>
+                    <span>切换用户</span>
+                </button>
+
+                <div class="popover user-menu" id="user-menu" role="menu"
+                     aria-label="切换用户" aria-hidden="true" inert>
+                    <button class="menu-option user-option" type="button" role="menuitemradio"
+                            aria-checked="true" data-user="lily" data-avatar="system">
+                        <span class="mini-avatar">
+                            <img src="../assets/avatar.webp" alt="" width="36" height="36">
+                        </span>
+                        <span class="option-copy">lily</span>
+                        <span class="menu-check" aria-hidden="true">✓</span>
+                    </button>
+                    <button class="menu-option user-option" type="button" role="menuitemradio"
+                            aria-checked="false" data-user="guest" data-avatar="guest">
+                        <span class="mini-avatar guest-avatar" aria-hidden="true">G</span>
+                        <span class="option-copy">访客</span>
+                        <span class="menu-check" aria-hidden="true">✓</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="session-area">
+                <button class="footer-trigger session-trigger" id="session-trigger" type="button"
+                        aria-expanded="false" aria-controls="session-menu"
+                        aria-haspopup="menu">
+                    <span id="active-session">Plasma (Wayland)</span>
+                    <svg class="chevron" viewBox="0 0 20 20" aria-hidden="true">
+                        <path d="m5 8 5 5 5-5"/>
+                    </svg>
+                </button>
+
+                <div class="popover session-menu" id="session-menu" role="menu"
+                     aria-label="当前会话" aria-hidden="true" inert>
+                    <button class="menu-option session-option" type="button" role="menuitemradio"
+                            aria-checked="true" data-session="Plasma (Wayland)">
+                        <span class="option-copy">Plasma (Wayland)</span>
+                        <span class="menu-check" aria-hidden="true">✓</span>
+                    </button>
+                    <button class="menu-option session-option" type="button" role="menuitemradio"
+                            aria-checked="false" data-session="Plasma (X11)">
+                        <span class="option-copy">Plasma (X11)</span>
+                        <span class="menu-check" aria-hidden="true">✓</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <p class="session-date" id="date">—</p>
+    </footer>
+
+    <dialog class="power-dialog" id="power-dialog">
+        <form method="dialog">
+            <h2 id="power-title">确认操作</h2>
+            <p id="power-description">未保存的工作可能会受到影响。</p>
+            <div class="dialog-actions">
+                <button class="secondary-action" value="cancel">取消</button>
+                <button class="primary-action" value="confirm">继续</button>
+            </div>
+        </form>
+    </dialog>
+</body>
+</html>

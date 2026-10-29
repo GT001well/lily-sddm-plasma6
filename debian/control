@@ -1,0 +1,18 @@
+Source: lily-sddm-plasma6
+Section: x11
+Priority: optional
+Maintainer: Lily <gt001well@users.noreply.github.com>
+Build-Depends: debhelper-compat (= 13), make
+Standards-Version: 4.7.2
+Rules-Requires-Root: no
+
+Package: lily-sddm-plasma6
+Architecture: all
+Depends: ${misc:Depends}, sddm,
+ qml6-module-qtquick,
+ qml6-module-qtquick-effects,
+ libqt6svg6
+Recommends: fonts-noto-cjk, sddm-kcm
+Description: Frosted-glass SDDM theme for Plasma 6
+ Lily is a Qt 6 QML login theme for SDDM with a frosted-glass side rail,
+ wallpaper-derived colors, user and session selection, and power actions.

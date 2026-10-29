@@ -1,0 +1,7 @@
+lily-sddm-plasma6 (0.2.2) unstable; urgency=medium
+
+  * Add Debian, Fedora, and openSUSE packaging metadata.
+  * Add a shared DESTDIR install target and packaging checks.
+  * Declare the Qt SVG runtime dependency explicitly.
+
+ -- Lily <gt001well@users.noreply.github.com>  Fri, 30 Oct 2026 05:40:00 +0800

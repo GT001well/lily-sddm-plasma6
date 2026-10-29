@@ -24,7 +24,7 @@ sudo pacman -U lily-sddm-plasma6-*.pkg.tar.zst
 
 ## AUR
 
-`PKGBUILD` 使用 `https://github.com/gt001well/Lily-sddm-plasma6` 的版本发布
+`PKGBUILD` 使用 `https://github.com/GT001well/lily-sddm-plasma6` 的版本发布
 资产。发布 `v0.2.3` 时必须上传 `make dist` 生成的
 `dist/lily-sddm-plasma6-0.2.3.tar.gz`，并确保 `sha256sums` 与该文件一致。
 提交 AUR 前运行：

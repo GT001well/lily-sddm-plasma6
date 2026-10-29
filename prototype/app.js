@@ -117,7 +117,7 @@ function moveMenuFocus(menu, direction) {
     options[nextIndex]?.focus({ preventScroll: true });
 }
 
-function bindMenu(trigger, menu, openKey) {
+function bindMenu(trigger, menu, { openKey, optionSelector, onSelect }) {
     trigger.addEventListener("click", () => {
         toggleMenu(trigger, menu);
     });
@@ -146,40 +146,39 @@ function bindMenu(trigger, menu, openKey) {
             closeMenus();
         }
     });
-}
 
-function bindOptionGroup(menu, selector, onSelect) {
     menu.addEventListener("click", (event) => {
-        const option = event.target.closest(selector);
+        const option = event.target.closest(optionSelector);
         if (!option) {
             return;
         }
 
-        menu.querySelectorAll(selector).forEach((item) => {
+        menu.querySelectorAll(optionSelector).forEach((item) => {
             item.setAttribute("aria-checked", String(item === option));
         });
         onSelect(option);
+        closeMenus();
+        trigger.focus({ preventScroll: true });
+        setStatus("");
     });
 }
 
-bindMenu(userTrigger, userMenu, "ArrowDown");
-bindMenu(sessionTrigger, sessionMenu, "ArrowUp");
-
-bindOptionGroup(userMenu, ".user-option", (option) => {
-    activeUserName.textContent = option.dataset.user;
-    avatarFallback.textContent = option.dataset.user.charAt(0).toUpperCase();
-    avatarFallback.setAttribute("aria-label", `${option.dataset.user} 的头像`);
-
-    closeMenus();
-    userTrigger.focus({ preventScroll: true });
-    setStatus("");
+bindMenu(userTrigger, userMenu, {
+    openKey: "ArrowDown",
+    optionSelector: ".user-option",
+    onSelect(option) {
+        activeUserName.textContent = option.dataset.user;
+        avatarFallback.textContent = option.dataset.user.charAt(0).toUpperCase();
+        avatarFallback.setAttribute("aria-label", `${option.dataset.user} 的头像`);
+    }
 });
 
-bindOptionGroup(sessionMenu, ".session-option", (option) => {
-    activeSession.textContent = option.dataset.session;
-    closeMenus();
-    sessionTrigger.focus({ preventScroll: true });
-    setStatus("");
+bindMenu(sessionTrigger, sessionMenu, {
+    openKey: "ArrowUp",
+    optionSelector: ".session-option",
+    onSelect(option) {
+        activeSession.textContent = option.dataset.session;
+    }
 });
 
 document.addEventListener("click", (event) => {

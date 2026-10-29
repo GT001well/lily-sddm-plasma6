@@ -21,18 +21,24 @@
 ## 项目结构
 
 ```text
-Main.qml         主题界面和登录逻辑
-metadata.desktop SDDM 主题元数据
-theme.conf       颜色、字体和资源路径
-PKGBUILD         Arch 打包脚本
-debian/          Debian、Ubuntu、KDE neon 打包元数据
-packaging/       Fedora、openSUSE RPM 元数据及发行版说明
-assets/          生成壁纸、预览图和 SVG 图标
-prototype/       HTML 布局原型
-NOTE/            设计及维护文档
-docs/            预览截图
-scripts/         检查和预览脚本
-LICENSE          GPL-3.0-or-later 许可证正文
+Main.qml          主题界面和登录逻辑
+Makefile          检查、安装、预览和发行入口
+metadata.desktop  SDDM 主题元数据
+theme.conf        颜色、字体和资源路径
+PKGBUILD          Arch 打包脚本
+.SRCINFO          AUR 包元数据
+CHANGELOG.md      版本变更记录
+README.md         中文说明
+README.en.md      英文说明
+debian/           Debian、Ubuntu、KDE neon 打包元数据
+packaging/        Fedora、openSUSE RPM 元数据及发行说明
+assets/           默认壁纸、预览图和 SVG 图标
+prototype/        HTML 布局原型（用于快速构图）
+NOTE/             设计及维护文档
+docs/             完整尺寸预览
+scripts/          检查、预览和发行脚本
+LICENSE           GPL-3.0-or-later 许可证正文
+LICENSES/         其他作品使用的许可证正文
 ```
 
 ## 安装方法
@@ -62,12 +68,18 @@ makepkg -f
 sudo pacman -U lily-sddm-plasma6-*-any.pkg.tar.zst
 ```
 
+发布到 AUR 前，需要先在同一版本的 GitHub Release 中上传
+`lily-sddm-plasma6-0.2.3.tar.gz`。`PKGBUILD` 的 `source` 和校验和指向该发布
+资产；可使用 `makepkg --printsrcinfo > .SRCINFO` 生成 AUR 元数据。
+
 ### Debian、Ubuntu、KDE neon
 
 ```bash
-sudo apt install debhelper dpkg-dev make
+sudo apt install debhelper dpkg-dev make ripgrep
+make dist-debian
+cp dist/lily-sddm-plasma6_0.2.3.orig.tar.gz ..
 dpkg-buildpackage -us -uc -b
-sudo apt install ../lily-sddm-plasma6_0.2.2_all.deb
+sudo apt install ../lily-sddm-plasma6_0.2.3-1_all.deb
 ```
 
 该方式要求目标发行版已提供 Plasma 6 和 Qt 6 SDDM。旧版 Plasma 5 系统不适用。
@@ -75,21 +87,21 @@ sudo apt install ../lily-sddm-plasma6_0.2.2_all.deb
 ### Fedora
 
 ```bash
-sudo dnf install rpm-build make qt6-qtdeclarative-devel
+sudo dnf install rpm-build make ripgrep qt6-qtdeclarative-devel
 make dist
 rpmbuild -ba packaging/rpm/lily-sddm-plasma6.spec \
     --define "_sourcedir $PWD/dist"
-sudo dnf install ~/rpmbuild/RPMS/noarch/lily-sddm-plasma6-0.2.2-*.rpm
+sudo dnf install ~/rpmbuild/RPMS/noarch/lily-sddm-plasma6-0.2.3-*.rpm
 ```
 
 ### openSUSE
 
 ```bash
-sudo zypper install rpm-build make qt6-declarative-devel
+sudo zypper install rpm-build make ripgrep qt6-declarative-devel
 make dist
 rpmbuild -ba packaging/rpm/lily-sddm-plasma6.spec \
     --define "_sourcedir $PWD/dist"
-sudo zypper install ~/rpmbuild/RPMS/noarch/lily-sddm-plasma6-0.2.2-*.rpm
+sudo zypper install ~/rpmbuild/RPMS/noarch/lily-sddm-plasma6-0.2.3-*.rpm
 ```
 
 完整的打包依赖、检查和源码归档说明见
@@ -104,8 +116,8 @@ sudo zypper install ~/rpmbuild/RPMS/noarch/lily-sddm-plasma6-0.2.2-*.rpm
 
 左侧模糊和自动取色会在下次 greeter 启动时生效。
 
-仓库内的默认壁纸由 `scripts/generate-wallpaper.py` 使用 Pillow 确定性生成。
-安装 Pillow 后可运行 `make wallpaper` 重新生成。
+默认壁纸为 Breeze Next（Hanabi），作者 Krystian Zajdel，许可
+CC-BY-SA-4.0。
 
 ## 兼容性与依赖
 
@@ -134,6 +146,6 @@ KCM 轻量预览，不参与 greeter 运行。
 
 ## 许可证
 
-项目代码采用 `GPL-3.0-or-later`。壁纸与图标均由项目自行生成，随 GPL
-一同分发。许可证正文见
-`LICENSE`，安装包会将其放置到 `/usr/share/licenses/lily-sddm-plasma6/`。
+项目代码与图标采用 `GPL-3.0-or-later`。默认壁纸为 Breeze Next（Hanabi），
+作者 Krystian Zajdel，许可 CC-BY-SA-4.0。GPL 许可证正文见 `LICENSE`，
+安装包会将其放置到 `/usr/share/licenses/lily-sddm-plasma6/`。

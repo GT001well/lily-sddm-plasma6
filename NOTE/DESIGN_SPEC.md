@@ -114,7 +114,7 @@ QML 中所有 `font.pixelSize` 必须使用整数，禁止 `10.5`、`14.4` 等�
 
 ## 颜色
 
-以下固定色板来自随包壁纸的 `3×3` 区域采样，用作自动取色失败时的后备：
+以下固定色板是自动取色失败时的设计后备色：
 
 ```text
 上排  #d2afcb  #e0c7de  #dbc4db
@@ -210,13 +210,14 @@ QML 中所有 `font.pixelSize` 必须使用整数，禁止 `10.5`、`14.4` 等�
   `autoSurfaceColors` 时强调色仍自动更新，控件表面单独回退。
 - HTML 仅用于确认布局、层级和色彩。最终交互、键盘焦点和实际登录必须用
   `sddm-greeter-qt6 --test-mode` 验证。
-- 用户头像优先使用系统用户模型提供的图标，缺失、加载失败或离屏预览时显示
-  用户姓名的首字母。
+- 用户头像优先使用系统用户模型提供的图标，缺失、加载失败、离屏预览或软件
+  渲染时显示用户姓名的首字母。
 - 圆形头像使用 `MultiEffect.maskEnabled + maskSource` 裁切，不通过 Canvas
   手动绘制；异步图片加载完成后由场景图自动更新。
 - 图标通过 `ThemedIcon` 在支持场景图效果时着色，软件渲染时回退到原始 SVG。
 - 壁纸通过 `Qt.resolvedUrl("assets/wallpaper.webp")` 加载，左侧模糊直接采样
-  同一个壁纸节点。
+  同一个壁纸节点。默认壁纸为 Breeze Next（Hanabi），作者 Krystian Zajdel，
+  许可 CC-BY-SA-4.0。
 - 会话菜单使用 `Repeater`/基础列表类型读取 `sessionModel` 的 `name` 角色，
   不使用缺少箭头的 `SddmComponents.ComboBox`。
 

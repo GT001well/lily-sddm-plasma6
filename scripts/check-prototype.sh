@@ -1,24 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-project_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source=scripts/lib-check.sh
+source "$(dirname -- "${BASH_SOURCE[0]}")/lib-check.sh"
 prototype_dir="$project_dir/prototype"
-failed=0
-
-fail() {
-    printf 'FAIL: %s\n' "$*" >&2
-    failed=1
-}
 
 for file in index.html styles.css app.js; do
-    if [[ ! -f "$prototype_dir/$file" ]]; then
-        fail "prototype/$file is missing"
-    fi
+    require_file "$prototype_dir/$file" "prototype/$file is missing"
 done
 
-if [[ ! -f "$project_dir/assets/wallpaper.webp" ]]; then
-    fail "assets/wallpaper.webp is missing"
-fi
+require_file "$project_dir/assets/wallpaper.webp" "assets/wallpaper.webp is missing"
 
 if command -v node >/dev/null 2>&1 && [[ -f "$prototype_dir/app.js" ]]; then
     node --check "$prototype_dir/app.js" || failed=1
@@ -65,8 +56,8 @@ if [[ -f "$prototype_dir/styles.css" ]]; then
 fi
 
 if [[ -f "$prototype_dir/index.html" ]]; then
-    rg -Fq 'id="avatar-fallback"' "$prototype_dir/index.html" ||
-        fail "avatar initial fallback is missing from the prototype"
+    require_fixed_match "$prototype_dir/index.html" 'id="avatar-fallback"' \
+        "avatar initial fallback is missing from the prototype"
 
     duplicate_ids="$(
         rg -o 'id="[^"]+"' "$prototype_dir/index.html" |
@@ -92,8 +83,9 @@ if [[ -f "$prototype_dir/index.html" ]]; then
 fi
 
 if [[ -f "$prototype_dir/styles.css" ]]; then
-    rg -Fq 'url("../assets/wallpaper.webp")' "$prototype_dir/styles.css" ||
-        fail "wallpaper asset is not referenced by the prototype"
+    require_fixed_match "$prototype_dir/styles.css" \
+        'url("../assets/wallpaper.webp")' \
+        "wallpaper asset is not referenced by the prototype"
 
     hidden_menu_count="$(
         rg -F -c 'aria-hidden="true" inert' "$prototype_dir/index.html" || true
@@ -105,8 +97,4 @@ if [[ -f "$prototype_dir/styles.css" ]]; then
     fi
 fi
 
-if (( failed != 0 )); then
-    exit 1
-fi
-
-printf 'Prototype checks passed.\n'
+finish_checks "Prototype checks passed."

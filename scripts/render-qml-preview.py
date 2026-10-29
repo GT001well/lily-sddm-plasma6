@@ -188,7 +188,7 @@ def main():
     root = view.rootObject()
     root.setProperty("width", args.width)
     root.setProperty("height", args.height)
-    root.setProperty("previewWithoutBackground", True)
+    root.setProperty("previewMode", True)
     view.setColor(QColor(0, 0, 0, 0))
     if args.menu:
         root.setProperty("activeMenu", args.menu)

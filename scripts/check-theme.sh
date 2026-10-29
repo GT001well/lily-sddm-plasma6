@@ -1,21 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-project_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source=scripts/lib-check.sh
+source "$(dirname -- "${BASH_SOURCE[0]}")/lib-check.sh"
 main_qml="$project_dir/Main.qml"
 metadata="$project_dir/metadata.desktop"
 theme_conf="$project_dir/theme.conf"
 license_file="$project_dir/LICENSE"
-failed=0
 
-fail() {
-    printf 'FAIL: %s\n' "$*" >&2
-    failed=1
-}
-
-if [[ ! -f "$main_qml" ]]; then
-    fail "Main.qml is missing"
-else
+require_file "$main_qml" "Main.qml is missing"
+if [[ -f "$main_qml" ]]; then
     while IFS= read -r import_line; do
         read -r _ module version _ <<<"$import_line"
 
@@ -40,9 +34,16 @@ else
         value="${value%%//*}"
         value="${value//[[:space:]]/}"
 
-        if [[ ! "$value" =~ ^[0-9]+$ ]]; then
-            fail "font.pixelSize at line $line_number is not an integer: $value"
+        if [[ "$value" =~ ^[0-9]+$ ]]; then
+            continue
         fi
+
+        if [[ "$value" =~ ^root\.([A-Za-z_][A-Za-z0-9_]*)$ ]] &&
+              rg -q "^[[:space:]]*readonly property int ${BASH_REMATCH[1]}:" "$main_qml"; then
+            continue
+        fi
+
+        fail "font.pixelSize at line $line_number is not an integer: $value"
     done < <(rg -n 'font\.pixelSize\s*:' "$main_qml")
 
     if rg -n '\bComboBox\b' "$main_qml" >/dev/null; then
@@ -57,9 +58,8 @@ else
     done < <(rg -n '^\s*source\s*:' "$main_qml" || true)
 fi
 
-if [[ ! -f "$metadata" ]]; then
-    fail "metadata.desktop is missing"
-else
+require_file "$metadata" "metadata.desktop is missing"
+if [[ -f "$metadata" ]]; then
     for required in \
         'Theme-API=2.0' \
         'QtVersion=6' \
@@ -77,21 +77,21 @@ else
     fi
 
     metadata_version="$(sed -n 's/^Version=//p' "$metadata" | head -n 1)"
-    package_version="$(sed -n 's/^pkgver=//p' "$project_dir/PKGBUILD" | head -n 1)"
-    if [[ -n "$metadata_version" && -n "$package_version" && "$metadata_version" != "$package_version" ]]; then
-        fail "metadata.desktop and PKGBUILD versions differ: $metadata_version != $package_version"
+    if [[ -f "$project_dir/PKGBUILD" ]]; then
+        package_version="$(sed -n 's/^pkgver=//p' "$project_dir/PKGBUILD" | head -n 1)"
+        if [[ -n "$metadata_version" && -n "$package_version" && "$metadata_version" != "$package_version" ]]; then
+            fail "metadata.desktop and PKGBUILD versions differ: $metadata_version != $package_version"
+        fi
     fi
 fi
 
-if [[ ! -f "$theme_conf" ]]; then
-    fail "theme.conf is missing"
-elif ! rg -Fqx -- 'autoSurfaceColors=true' "$theme_conf"; then
-    fail "theme.conf is missing default autoSurfaceColors=true"
+require_file "$theme_conf" "theme.conf is missing"
+if [[ -f "$theme_conf" ]]; then
+    require_fixed_match "$theme_conf" "autoSurfaceColors=true" \
+        "theme.conf is missing default autoSurfaceColors=true"
 fi
 
-if [[ ! -f "$license_file" ]]; then
-    fail "LICENSE is missing"
-fi
+require_file "$license_file" "LICENSE is missing"
 
 for asset in \
     assets/wallpaper.webp \
@@ -104,19 +104,42 @@ for asset in \
     assets/icons/restart.svg \
     assets/icons/sleep.svg \
     assets/icons/user-switch.svg; do
-    if [[ ! -f "$project_dir/$asset" ]]; then
-        fail "theme asset is missing: $asset"
-    fi
+    require_file "$project_dir/$asset" "theme asset is missing: $asset"
+done
+
+for removed_asset in \
+    assets/avatar.webp \
+    assets/avatar-circle.webp; do
+    require_absent "$project_dir/$removed_asset" \
+        "removed avatar asset must not be present: $removed_asset"
 done
 
 if command -v qmllint >/dev/null 2>&1 && [[ -f "$main_qml" ]]; then
-    if ! qmllint -I /usr/lib/qt6/qml "$main_qml"; then
+    qml_import_dir=""
+    if command -v qmake6 >/dev/null 2>&1; then
+        qml_import_dir="$(qmake6 -query QT_INSTALL_QML 2>/dev/null || true)"
+    fi
+
+    if [[ ! -d "$qml_import_dir" ]]; then
+        for candidate in \
+            /usr/lib/qt6/qml \
+            /usr/lib64/qt6/qml \
+            /usr/lib/*-linux-gnu/qt6/qml; do
+            if [[ -d "$candidate" ]]; then
+                qml_import_dir="$candidate"
+                break
+            fi
+        done
+    fi
+
+    qmllint_args=()
+    if [[ -d "$qml_import_dir" ]]; then
+        qmllint_args=(-I "$qml_import_dir")
+    fi
+
+    if ! qmllint "${qmllint_args[@]}" "$main_qml"; then
         failed=1
     fi
 fi
 
-if (( failed != 0 )); then
-    exit 1
-fi
-
-printf 'Theme checks passed.\n'
+finish_checks "Theme checks passed."

@@ -7,7 +7,7 @@ THEME_DIR ?= $(DESTDIR)$(DATADIR)/sddm/themes/$(PKGNAME)
 DOC_DIR ?= $(DESTDIR)$(DATADIR)/doc/$(PKGNAME)
 LICENSE_DIR ?= $(DESTDIR)$(DATADIR)/licenses/$(PKGNAME)
 
-.PHONY: check check-layout check-packaging install dist preview prototype render-preview wallpaper
+.PHONY: check check-layout check-packaging install dist dist-debian preview prototype render-preview
 
 check:
 	./scripts/check-theme.sh
@@ -34,10 +34,14 @@ install:
 	install -m644 assets/*.webp assets/*.png "$(THEME_DIR)/assets/"
 	install -m644 assets/icons/*.svg "$(THEME_DIR)/assets/icons/"
 	install -m644 README.md README.en.md CHANGELOG.md "$(DOC_DIR)/"
-	install -m644 LICENSE "$(LICENSE_DIR)/LICENSE"
+	install -m644 LICENSE LICENSES/CC-BY-SA-4.0.txt "$(LICENSE_DIR)/"
 
 dist:
 	./scripts/build-source-archive.sh
+	./scripts/build-debian-orig.sh
+
+dist-debian:
+	./scripts/build-debian-orig.sh
 
 preview:
 	./scripts/preview.sh
@@ -47,6 +51,3 @@ prototype:
 
 render-preview:
 	./scripts/render-previews.sh
-
-wallpaper:
-	./scripts/generate-wallpaper.py

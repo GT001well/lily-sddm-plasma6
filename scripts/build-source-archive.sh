@@ -17,8 +17,8 @@ source_dir="$staging_dir/$package_name-$version"
 mkdir -p "$source_dir" "$project_dir/dist"
 
 for source in \
-    Main.qml metadata.desktop theme.conf Makefile PKGBUILD \
-    README.md README.en.md CHANGELOG.md LICENSE \
+    Main.qml metadata.desktop theme.conf Makefile \
+    README.md README.en.md CHANGELOG.md LICENSE LICENSES \
     assets docs NOTE prototype scripts debian packaging; do
     cp -a "$project_dir/$source" "$source_dir/"
 done

@@ -2,7 +2,7 @@ Source: lily-sddm-plasma6
 Section: x11
 Priority: optional
 Maintainer: Lily <gt001well@users.noreply.github.com>
-Build-Depends: debhelper-compat (= 13), make
+Build-Depends: debhelper-compat (= 13), make, ripgrep
 Standards-Version: 4.7.2
 Rules-Requires-Root: no
 

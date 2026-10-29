@@ -6,27 +6,54 @@ Rectangle {
     id: root
 
     readonly property real uiScale: Math.max(0.01, Math.min(width / 1920, height / 1080))
+    readonly property var defaultColors: ({
+        "textPrimary": "#fff7fc",
+        "textSecondary": "#e5d5e8",
+        "textTertiary": "#e2d7e7",
+        "accent": "#e0c7de",
+        "accentStrong": "#d2afcb",
+        "ink": "#2b1e33",
+        "error": "#ffd1d9",
+        "field": "#48304f",
+        "fieldHover": "#523c5b",
+        "selected": "#644a6d",
+        "menu": "#e61f1526",
+        "borderSubtle": "#45eadcf0",
+        "borderStrong": "#78eadcf0",
+        "borderFaint": "#40eadcf0",
+        "focusBorder": "#d8cbd9",
+        "divider": "#33eadcf0",
+        "glassTint": "#2d1e35",
+        "scrim": "#080b15"
+    })
     readonly property string fontFamily: config.fontFamily ? config.fontFamily : "Noto Sans CJK SC"
-    readonly property color textPrimary: config.textColor ? config.textColor : "#fff7fc"
-    readonly property color textSecondary: config.mutedColor ? config.mutedColor : "#e5d5e8"
-    readonly property color textTertiary: config.tertiaryColor ? config.tertiaryColor : "#e2d7e7"
-    readonly property color fallbackAccentColor: config.accentColor ? config.accentColor : "#e0c7de"
-    readonly property color fallbackAccentStrongColor: config.accentSoftColor ? config.accentSoftColor : "#d2afcb"
-    readonly property color inkColor: config.panelColor ? config.panelColor : "#2b1e33"
-    readonly property color errorColor: config.errorColor ? config.errorColor : "#ffd1d9"
-    readonly property color fallbackFieldColor: config.fieldColor ? config.fieldColor : "#48304f"
-    readonly property color fallbackFieldHoverColor: config.fieldHoverColor ? config.fieldHoverColor : "#523c5b"
-    readonly property color fallbackSelectedColor: config.selectedColor ? config.selectedColor : "#644a6d"
-    readonly property color fallbackMenuColor: config.menuColor ? config.menuColor : "#e61f1526"
-    readonly property color fallbackBorderSubtleColor: config.borderColor ? config.borderColor : "#45eadcf0"
-    readonly property color fallbackBorderStrongColor: config.borderStrongColor ? config.borderStrongColor : "#78eadcf0"
-    readonly property color fallbackBorderFaintColor: config.borderFaintColor ? config.borderFaintColor : "#40eadcf0"
-    readonly property color fallbackFocusBorderColor: config.focusBorderColor ? config.focusBorderColor : "#d8cbd9"
-    readonly property color fallbackDividerColor: config.dividerColor ? config.dividerColor : "#33eadcf0"
-    readonly property color fallbackGlassTintColor: config.glassTintColor ? config.glassTintColor : "#2d1e35"
+    readonly property color textPrimary: config.textColor ? config.textColor : defaultColors.textPrimary
+    readonly property color textSecondary: config.mutedColor ? config.mutedColor : defaultColors.textSecondary
+    readonly property color textTertiary: config.tertiaryColor ? config.tertiaryColor : defaultColors.textTertiary
+    readonly property color fallbackAccentColor: config.accentColor ? config.accentColor : defaultColors.accent
+    readonly property color fallbackAccentStrongColor: config.accentSoftColor ? config.accentSoftColor : defaultColors.accentStrong
+    readonly property color inkColor: config.panelColor ? config.panelColor : defaultColors.ink
+    readonly property color errorColor: config.errorColor ? config.errorColor : defaultColors.error
+    readonly property color fallbackFieldColor: config.fieldColor ? config.fieldColor : defaultColors.field
+    readonly property color fallbackFieldHoverColor: config.fieldHoverColor ? config.fieldHoverColor : defaultColors.fieldHover
+    readonly property color fallbackSelectedColor: config.selectedColor ? config.selectedColor : defaultColors.selected
+    readonly property color fallbackMenuColor: config.menuColor ? config.menuColor : defaultColors.menu
+    readonly property color fallbackBorderSubtleColor: config.borderColor ? config.borderColor : defaultColors.borderSubtle
+    readonly property color fallbackBorderStrongColor: config.borderStrongColor ? config.borderStrongColor : defaultColors.borderStrong
+    readonly property color fallbackBorderFaintColor: config.borderFaintColor ? config.borderFaintColor : defaultColors.borderFaint
+    readonly property color fallbackFocusBorderColor: config.focusBorderColor ? config.focusBorderColor : defaultColors.focusBorder
+    readonly property color fallbackDividerColor: config.dividerColor ? config.dividerColor : defaultColors.divider
+    readonly property color fallbackGlassTintColor: config.glassTintColor ? config.glassTintColor : defaultColors.glassTint
     readonly property string backgroundSource: config.background ? Qt.resolvedUrl(config.background) : Qt.resolvedUrl("assets/wallpaper.webp")
     readonly property bool capsLockOn: typeof keyboard !== "undefined" ? keyboard.capsLock : false
-    readonly property real railWidth: Math.min(width, 608 * uiScale)
+    readonly property int railDesignWidth: 608
+    readonly property int avatarFrameSize: 128
+    readonly property int avatarImageSize: 112
+    readonly property int avatarImageRadius: 56
+    readonly property int avatarRingWidth: 6
+    readonly property int avatarShadowOffset: 5
+    readonly property int avatarInitialPixelSize: 20
+    readonly property real railWidth: Math.min(width, railDesignWidth * uiScale)
     readonly property bool autoColors: config.autoColors !== false && config.autoColors !== "false"
     readonly property bool autoSurfaceColors: config.autoSurfaceColors !== false && config.autoSurfaceColors !== "false"
     readonly property color accentColor: sampledPaletteReady ? sampledAccentColor : fallbackAccentColor
@@ -34,22 +61,22 @@ Rectangle {
     readonly property color glassTintColor: sampledPaletteReady ? sampledGlassTintColor : fallbackGlassTintColor
     readonly property bool dynamicSurfaceColors: sampledPaletteReady && autoSurfaceColors
     readonly property real themedSurfaceSaturation: clampValue(glassTintColor.hslSaturation * 0.85, 0.18, 0.28)
-    readonly property color fieldColor: dynamicSurfaceColors ? Qt.hsla(accentColor.hslHue, themedSurfaceSaturation, 0.25, 1) : fallbackFieldColor
-    readonly property color fieldHoverColor: dynamicSurfaceColors ? Qt.hsla(accentColor.hslHue, themedSurfaceSaturation, 0.3, 1) : fallbackFieldHoverColor
-    readonly property color selectedColor: dynamicSurfaceColors ? Qt.hsla(accentColor.hslHue, themedSurfaceSaturation, 0.34, 1) : fallbackSelectedColor
-    readonly property color menuColor: dynamicSurfaceColors ? Qt.hsla(accentColor.hslHue, Math.min(themedSurfaceSaturation, 0.22), 0.125, 0.94) : fallbackMenuColor
-    readonly property color borderSubtleColor: dynamicSurfaceColors ? Qt.rgba(accentColor.r, accentColor.g, accentColor.b, 0.28) : fallbackBorderSubtleColor
-    readonly property color borderStrongColor: dynamicSurfaceColors ? Qt.rgba(accentColor.r, accentColor.g, accentColor.b, 0.52) : fallbackBorderStrongColor
-    readonly property color borderFaintColor: dynamicSurfaceColors ? Qt.rgba(accentColor.r, accentColor.g, accentColor.b, 0.18) : fallbackBorderFaintColor
-    readonly property color focusBorderColor: dynamicSurfaceColors ? accentStrongColor : fallbackFocusBorderColor
-    readonly property color dividerColor: dynamicSurfaceColors ? Qt.rgba(accentColor.r, accentColor.g, accentColor.b, 0.22) : fallbackDividerColor
-    readonly property color scrimColor: dynamicSurfaceColors ? Qt.hsla(accentColor.hslHue, themedSurfaceSaturation * 0.7, 0.04, 1) : "#080b15"
-    property color sampledAccentColor: "#e0c7de"
-    property color sampledAccentStrongColor: "#d2afcb"
-    property color sampledGlassTintColor: "#2d1e35"
+    property color fieldColor: fallbackFieldColor
+    property color fieldHoverColor: fallbackFieldHoverColor
+    property color selectedColor: fallbackSelectedColor
+    property color menuColor: fallbackMenuColor
+    property color borderSubtleColor: fallbackBorderSubtleColor
+    property color borderStrongColor: fallbackBorderStrongColor
+    property color borderFaintColor: fallbackBorderFaintColor
+    property color focusBorderColor: fallbackFocusBorderColor
+    property color dividerColor: fallbackDividerColor
+    property color scrimColor: defaultColors.scrim
+    property color sampledAccentColor: defaultColors.accent
+    property color sampledAccentStrongColor: defaultColors.accentStrong
+    property color sampledGlassTintColor: defaultColors.glassTint
     property bool sampledPaletteReady: false
     property bool paletteSamplingDone: false
-    property bool previewWithoutBackground: false
+    property bool previewMode: false
     property int currentUserIndex: -1
     property string currentUserName: ""
     property string currentUserDisplayName: ""
@@ -109,9 +136,6 @@ Rectangle {
     }
 
     function userIconSource(path) {
-        if (!path)
-            return "";
-
         if (path.indexOf("://") >= 0 || path.charAt(0) === "/")
             return path;
 
@@ -120,6 +144,40 @@ Rectangle {
 
     function clampValue(value, minimum, maximum) {
         return Math.max(minimum, Math.min(maximum, value));
+    }
+
+    function themeHsla(lightness, alpha, saturation) {
+        return Qt.hsla(accentColor.hslHue, saturation, lightness, alpha);
+    }
+
+    function themeRgba(alpha) {
+        return Qt.rgba(accentColor.r, accentColor.g, accentColor.b, alpha);
+    }
+
+    function updateThemeColors() {
+        if (dynamicSurfaceColors) {
+            fieldColor = themeHsla(0.25, 1, themedSurfaceSaturation);
+            fieldHoverColor = themeHsla(0.3, 1, themedSurfaceSaturation);
+            selectedColor = themeHsla(0.34, 1, themedSurfaceSaturation);
+            menuColor = themeHsla(0.125, 0.94, Math.min(themedSurfaceSaturation, 0.22));
+            borderSubtleColor = themeRgba(0.28);
+            borderStrongColor = themeRgba(0.52);
+            borderFaintColor = themeRgba(0.18);
+            focusBorderColor = accentStrongColor;
+            dividerColor = themeRgba(0.22);
+            scrimColor = themeHsla(0.04, 1, themedSurfaceSaturation * 0.7);
+        } else {
+            fieldColor = fallbackFieldColor;
+            fieldHoverColor = fallbackFieldHoverColor;
+            selectedColor = fallbackSelectedColor;
+            menuColor = fallbackMenuColor;
+            borderSubtleColor = fallbackBorderSubtleColor;
+            borderStrongColor = fallbackBorderStrongColor;
+            borderFaintColor = fallbackBorderFaintColor;
+            focusBorderColor = fallbackFocusBorderColor;
+            dividerColor = fallbackDividerColor;
+            scrimColor = defaultColors.scrim;
+        }
     }
 
     function timeGreeting() {
@@ -405,13 +463,19 @@ Rectangle {
 
     width: Screen.width
     height: Screen.height
-    color: previewWithoutBackground ? "transparent" : "#1c1423"
+    color: previewMode ? "transparent" : "#1c1423"
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
+    Component.onCompleted: updateThemeColors()
+    onAccentColorChanged: updateThemeColors()
+    onAccentStrongColorChanged: updateThemeColors()
+    onThemedSurfaceSaturationChanged: updateThemeColors()
+    onDynamicSurfaceColorsChanged: updateThemeColors()
+
     Rectangle {
         anchors.fill: parent
-        visible: !root.previewWithoutBackground
+        visible: !root.previewMode
 
         gradient: Gradient {
             GradientStop {
@@ -442,7 +506,7 @@ Rectangle {
         asynchronous: true
         cache: true
         smooth: true
-        visible: status === Image.Ready && !root.previewWithoutBackground
+        visible: status === Image.Ready && !root.previewMode
         onStatusChanged: {
             if (status === Image.Ready) {
                 blurSource.scheduleUpdate();
@@ -525,7 +589,7 @@ Rectangle {
         blur: 1
         blurMax: 64
         autoPaddingEnabled: false
-        visible: !root.previewWithoutBackground && GraphicsInfo.api !== GraphicsInfo.Software
+        visible: !root.previewMode && GraphicsInfo.api !== GraphicsInfo.Software
 
         anchors {
             top: parent.top
@@ -539,7 +603,7 @@ Rectangle {
         width: root.railWidth
         color: root.glassTintColor
         opacity: 0.32
-        visible: !root.previewWithoutBackground
+        visible: !root.previewMode
 
         anchors {
             top: parent.top
@@ -620,43 +684,37 @@ Rectangle {
                     Item {
                         id: avatarBlock
 
-                        width: 128
-                        height: 128
+                        width: root.avatarFrameSize
+                        height: root.avatarFrameSize
                         anchors.horizontalCenter: parent.horizontalCenter
 
                         Rectangle {
-                            width: 128
-                            height: 128
+                            width: root.avatarFrameSize
+                            height: root.avatarFrameSize
                             anchors.horizontalCenter: parent.horizontalCenter
-                            y: 5
-                            radius: 64
+                            y: root.avatarShadowOffset
+                            radius: root.avatarFrameSize / 2
                             color: "#000000"
                             opacity: 0.18
                         }
 
                         Rectangle {
-                            width: 128
-                            height: 128
+                            width: root.avatarFrameSize
+                            height: root.avatarFrameSize
                             anchors.centerIn: parent
-                            radius: 64
-                            color: root.accentColor
-                        }
-
-                        Rectangle {
-                            width: 116
-                            height: 116
-                            anchors.centerIn: parent
-                            radius: 58
+                            radius: root.avatarFrameSize / 2
                             color: "#000000"
+                            border.color: root.accentColor
+                            border.width: root.avatarRingWidth
                         }
 
                         Rectangle {
                             id: avatarMask
 
-                            width: 112
-                            height: 112
+                            width: root.avatarImageSize
+                            height: root.avatarImageSize
                             anchors.centerIn: parent
-                            radius: 56
+                            radius: root.avatarImageRadius
                             color: "#ffffff"
                             visible: false
                             layer.enabled: true
@@ -665,14 +723,14 @@ Rectangle {
                         Image {
                             id: avatarImage
 
-                            width: 112
-                            height: 112
+                            width: root.avatarImageSize
+                            height: root.avatarImageSize
                             anchors.centerIn: parent
                             visible: false
                             source: root.currentUserAvatar === "" ? "" : root.userIconSource(root.currentUserAvatar)
                             fillMode: Image.PreserveAspectCrop
-                            sourceSize.width: 112
-                            sourceSize.height: 112
+                            sourceSize.width: root.avatarImageSize
+                            sourceSize.height: root.avatarImageSize
                             asynchronous: true
                             cache: true
                             smooth: true
@@ -681,23 +739,23 @@ Rectangle {
                         MultiEffect {
                             id: avatarEffect
 
-                            width: 112
-                            height: 112
+                            width: root.avatarImageSize
+                            height: root.avatarImageSize
                             anchors.centerIn: parent
                             source: avatarImage
                             maskEnabled: true
                             maskSource: avatarMask
                             autoPaddingEnabled: false
-                            visible: !root.previewWithoutBackground && GraphicsInfo.api !== GraphicsInfo.Software && avatarImage.status === Image.Ready
+                            visible: !root.previewMode && GraphicsInfo.api !== GraphicsInfo.Software && avatarImage.status === Image.Ready
                         }
 
                         Text {
                             anchors.centerIn: parent
-                            visible: !avatarEffect.visible || avatarImage.status !== Image.Ready
+                            visible: !avatarEffect.visible
                             text: root.currentUserDisplayName.length > 0 ? root.currentUserDisplayName.charAt(0).toUpperCase() : "?"
                             color: root.accentColor
                             font.family: root.fontFamily
-                            font.pixelSize: 20
+                            font.pixelSize: root.avatarInitialPixelSize
                             font.weight: Font.Medium
                         }
 

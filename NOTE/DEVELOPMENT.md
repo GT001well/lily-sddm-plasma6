@@ -23,7 +23,8 @@
 - 系统头像由 `MultiEffect` 圆形遮罩裁切，不使用 Canvas。图片未加载、effects
   不可用或处于离屏预览模式时显示姓名首字母。
 - 软件渲染时效果不可用，半透明色调层仍会保留。
-- HTML 原型宽度为 `34rem`；QML 仍使用 `608px` 设计宽度，后续需确认是否同步。
+- HTML 原型宽度为 `34rem`，QML 使用 `608px` 设计宽度；两者按各自画布和控件
+  尺寸校准，不要求像素宽度相同。
 
 壁纸通过 Plasma 的“登录屏幕（SDDM）”设置选择。`sddm-kcm` 会把图片复制到
 主题目录，并用 `theme.conf.user` 覆盖 `background`。greeter 启动时会把壁纸
@@ -32,12 +33,15 @@
 文字色、错误色和主按钮文字保持固定，以保证可读性。`autoSurfaceColors=false`
 可保留自动强调色，同时使用 `theme.conf` 中的固定控件颜色。
 
+随包默认壁纸为 Breeze Next（Hanabi），作者 Krystian Zajdel，许可
+CC-BY-SA-4.0。
+
 `docs/preview.png` 保存完整尺寸预览；`assets/preview.png` 是打包进主题的轻量
 KCM 预览图。若 KCM 显示“无可用预览”，确认 `metadata.desktop` 的 `Screenshot`
 指向 `assets/preview.png`，并确认软件包实际包含该文件。
 
-项目代码使用 `GPL-3.0-or-later`。壁纸与图标均由项目自行生成，随 GPL
-一同分发。
+项目代码与图标使用 `GPL-3.0-or-later`；默认壁纸使用 CC-BY-SA-4.0，并保留
+作者与许可署名。
 
 ## 动效维护
 
@@ -73,7 +77,7 @@ offscreen 运行只适合做基础启动测试。当前打包的 greeter 在 off
 自动化工具无法接入桌面显示时，可以使用 Qt 的 VNC 平台启动同一个 greeter，
 再抓取虚拟帧缓冲进行视觉检查。VNC 只用于开发验证，不是正式登录环境。
 
-当前开发沙箱无法访问桌面显示。可使用以下命令在 offscreen 模式注入模拟用户、
+当开发环境无法访问桌面显示时，可使用以下命令在 offscreen 模式注入模拟用户、
 会话和认证对象，同时更新 `docs/preview.png` 与 `assets/preview.png`：
 
 ```bash
@@ -98,7 +102,7 @@ make render-preview
 9. 修改 SDDM 当前主题前，先在 TTY 中完成受控测试。
 10. 同步 `CHANGELOG.md`、`PKGBUILD`、`metadata.desktop`、Debian changelog
     和 RPM spec 中的版本号。
-11. 验证 KCM 预览、GPL 元数据与许可证正文，并确认素材均由项目生成。
+11. 验证 KCM 预览、许可证元数据与正文，并确认默认壁纸署名完整。
 12. 确认 `NOTE/DESIGN_SPEC.md`、`NOTE/DEVELOPMENT.md` 和
    `prototype/README.md` 与实际原型一致。
 

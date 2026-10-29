@@ -155,6 +155,7 @@ Rectangle {
     }
 
     function updateThemeColors() {
+        // config is static for the greeter lifetime; wallpaper-derived changes refresh via explicit signals below.
         if (dynamicSurfaceColors) {
             fieldColor = themeHsla(0.25, 1, themedSurfaceSaturation);
             fieldHoverColor = themeHsla(0.3, 1, themedSurfaceSaturation);

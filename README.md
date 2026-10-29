@@ -27,7 +27,7 @@ theme.conf       颜色、字体和资源路径
 PKGBUILD         Arch 打包脚本
 debian/          Debian、Ubuntu、KDE neon 打包元数据
 packaging/       Fedora、openSUSE RPM 元数据及发行版说明
-assets/          壁纸、头像、预览图和 SVG 图标
+assets/          生成壁纸、预览图和 SVG 图标
 prototype/       HTML 布局原型
 NOTE/            设计及维护文档
 docs/            预览截图
@@ -104,6 +104,9 @@ sudo zypper install ~/rpmbuild/RPMS/noarch/lily-sddm-plasma6-0.2.2-*.rpm
 
 左侧模糊和自动取色会在下次 greeter 启动时生效。
 
+仓库内的默认壁纸由 `scripts/generate-wallpaper.py` 使用 Pillow 确定性生成。
+安装 Pillow 后可运行 `make wallpaper` 重新生成。
+
 ## 兼容性与依赖
 
 测试环境：
@@ -131,6 +134,6 @@ KCM 轻量预览，不参与 greeter 运行。
 
 ## 许可证
 
-项目代码采用 `GPL-3.0-or-later`。壁纸和头像来自外部素材，不因本项目的
-GPL 声明自动变为 GPL；对外分发前需确认原素材授权。许可证正文见
+项目代码采用 `GPL-3.0-or-later`。壁纸与图标均由项目自行生成，随 GPL
+一同分发。许可证正文见
 `LICENSE`，安装包会将其放置到 `/usr/share/licenses/lily-sddm-plasma6/`。

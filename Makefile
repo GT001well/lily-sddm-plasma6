@@ -7,7 +7,7 @@ THEME_DIR ?= $(DESTDIR)$(DATADIR)/sddm/themes/$(PKGNAME)
 DOC_DIR ?= $(DESTDIR)$(DATADIR)/doc/$(PKGNAME)
 LICENSE_DIR ?= $(DESTDIR)$(DATADIR)/licenses/$(PKGNAME)
 
-.PHONY: check check-layout check-packaging install dist preview prototype render-preview
+.PHONY: check check-layout check-packaging install dist preview prototype render-preview wallpaper
 
 check:
 	./scripts/check-theme.sh
@@ -47,3 +47,6 @@ prototype:
 
 render-preview:
 	./scripts/render-previews.sh
+
+wallpaper:
+	./scripts/generate-wallpaper.py

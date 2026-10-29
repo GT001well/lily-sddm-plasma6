@@ -57,5 +57,4 @@ openSUSE 使用 spec 中列出的 `qt6-declarative-devel`、`libQt6Quick6`、
 
 ## 素材授权
 
-代码使用 `GPL-3.0-or-later`。壁纸和头像属于外部素材，公开分发前必须确认其
-来源与再分发许可；此限制不因代码许可证而改变。
+代码使用 `GPL-3.0-or-later`。壁纸与图标均由项目自行生成，随 GPL 一同分发。

@@ -7,6 +7,8 @@
 - 增加 Debian、Ubuntu 和 KDE neon 的 DEB 打包元数据。
 - 增加 Fedora 与 openSUSE 共用的 RPM spec。
 - 增加跨发行版共享的 `DESTDIR` 安装目标和打包一致性检查。
+- 增加可复现的项目自有壁纸生成脚本，移除两张外部头像素材；缺失头像和
+  离屏预览统一显示姓名首字母。
 
 ### 修复
 

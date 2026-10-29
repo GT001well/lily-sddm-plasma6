@@ -16,9 +16,8 @@
             <div class="login-content">
                 <div class="identity">
                     <span class="avatar-frame">
-                        <img id="active-avatar" src="../assets/avatar.webp"
-                             alt="lily 的系统头像" width="88" height="88">
-                        <span class="avatar-fallback" id="avatar-fallback" aria-hidden="true">G</span>
+                        <span class="avatar-fallback is-visible" id="avatar-fallback"
+                              aria-label="lily 的头像">L</span>
                     </span>
                     <div class="identity-copy">
                         <strong class="user-name" id="active-user-name">lily</strong>
@@ -103,16 +102,14 @@
                 <div class="popover user-menu" id="user-menu" role="menu"
                      aria-label="切换用户" aria-hidden="true" inert>
                     <button class="menu-option user-option" type="button" role="menuitemradio"
-                            aria-checked="true" data-user="lily" data-avatar="system">
-                        <span class="mini-avatar">
-                            <img src="../assets/avatar.webp" alt="" width="36" height="36">
-                        </span>
+                            aria-checked="true" data-user="lily">
+                        <span class="mini-avatar" aria-hidden="true">L</span>
                         <span class="option-copy">lily</span>
                         <span class="menu-check" aria-hidden="true">✓</span>
                     </button>
                     <button class="menu-option user-option" type="button" role="menuitemradio"
-                            aria-checked="false" data-user="guest" data-avatar="guest">
-                        <span class="mini-avatar guest-avatar" aria-hidden="true">G</span>
+                            aria-checked="false" data-user="guest">
+                        <span class="mini-avatar" aria-hidden="true">G</span>
                         <span class="option-copy">访客</span>
                         <span class="menu-check" aria-hidden="true">✓</span>
                     </button>

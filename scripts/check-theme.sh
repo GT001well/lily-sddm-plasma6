@@ -95,8 +95,6 @@ fi
 
 for asset in \
     assets/wallpaper.webp \
-    assets/avatar.webp \
-    assets/avatar-circle.webp \
     assets/preview.png \
     assets/icons/check.svg \
     assets/icons/chevron-down.svg \

@@ -210,8 +210,8 @@ QML 中所有 `font.pixelSize` 必须使用整数，禁止 `10.5`、`14.4` 等�
   `autoSurfaceColors` 时强调色仍自动更新，控件表面单独回退。
 - HTML 仅用于确认布局、层级和色彩。最终交互、键盘焦点和实际登录必须用
   `sddm-greeter-qt6 --test-mode` 验证。
-- 用户头像优先使用系统用户模型提供的图标，缺失时通过
-  `Qt.resolvedUrl("assets/avatar.webp")` 加载内置头像。
+- 用户头像优先使用系统用户模型提供的图标，缺失、加载失败或离屏预览时显示
+  用户姓名的首字母。
 - 圆形头像使用 `MultiEffect.maskEnabled + maskSource` 裁切，不通过 Canvas
   手动绘制；异步图片加载完成后由场景图自动更新。
 - 图标通过 `ThemedIcon` 在支持场景图效果时着色，软件渲染时回退到原始 SVG。

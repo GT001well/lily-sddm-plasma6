@@ -7,7 +7,6 @@ const statusText = document.querySelector("#status-text");
 const userTrigger = document.querySelector("#user-trigger");
 const userMenu = document.querySelector("#user-menu");
 const activeUserName = document.querySelector("#active-user-name");
-const activeAvatar = document.querySelector("#active-avatar");
 const avatarFallback = document.querySelector("#avatar-fallback");
 const greeting = document.querySelector("#greeting");
 
@@ -168,13 +167,8 @@ bindMenu(sessionTrigger, sessionMenu, "ArrowUp");
 
 bindOptionGroup(userMenu, ".user-option", (option) => {
     activeUserName.textContent = option.dataset.user;
-
-    const usesSystemAvatar = option.dataset.avatar === "system";
-    activeAvatar.classList.toggle("is-hidden", !usesSystemAvatar);
-    avatarFallback.classList.toggle("is-visible", !usesSystemAvatar);
-    activeAvatar.alt = usesSystemAvatar
-        ? `${option.dataset.user} 的系统头像`
-        : "";
+    avatarFallback.textContent = option.dataset.user.charAt(0).toUpperCase();
+    avatarFallback.setAttribute("aria-label", `${option.dataset.user} 的头像`);
 
     closeMenus();
     userTrigger.focus({ preventScroll: true });

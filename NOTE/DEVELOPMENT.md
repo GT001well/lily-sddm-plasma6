@@ -20,8 +20,8 @@
   不照搬 HTML 表单结构。
 - 左侧毛玻璃使用 `ShaderEffectSource` 和 `MultiEffect` 实时生成，纹理降采样
   到一半分辨率，只覆盖左侧区域，不做右侧渐隐。
-- 系统头像由 `MultiEffect` 圆形遮罩裁切，不使用 Canvas。图片未加载或 effects
-  不可用时显示姓名首字母；预览模式使用内置圆形头像。
+- 系统头像由 `MultiEffect` 圆形遮罩裁切，不使用 Canvas。图片未加载、effects
+  不可用或处于离屏预览模式时显示姓名首字母。
 - 软件渲染时效果不可用，半透明色调层仍会保留。
 - HTML 原型宽度为 `34rem`；QML 仍使用 `608px` 设计宽度，后续需确认是否同步。
 
@@ -36,8 +36,8 @@
 KCM 预览图。若 KCM 显示“无可用预览”，确认 `metadata.desktop` 的 `Screenshot`
 指向 `assets/preview.png`，并确认软件包实际包含该文件。
 
-项目代码使用 `GPL-3.0-or-later`。壁纸和头像属于外部素材，不因项目许可证
-自动改变授权；公开发布前必须确认素材来源和再分发许可。
+项目代码使用 `GPL-3.0-or-later`。壁纸与图标均由项目自行生成，随 GPL
+一同分发。
 
 ## 动效维护
 
@@ -98,7 +98,7 @@ make render-preview
 9. 修改 SDDM 当前主题前，先在 TTY 中完成受控测试。
 10. 同步 `CHANGELOG.md`、`PKGBUILD`、`metadata.desktop`、Debian changelog
     和 RPM spec 中的版本号。
-11. 验证 KCM 预览、GPL 元数据与许可证正文、外部素材授权。
+11. 验证 KCM 预览、GPL 元数据与许可证正文，并确认素材均由项目生成。
 12. 确认 `NOTE/DESIGN_SPEC.md`、`NOTE/DEVELOPMENT.md` 和
    `prototype/README.md` 与实际原型一致。
 

@@ -65,7 +65,7 @@ else
     theme_dir="$staging_dir/usr/share/sddm/themes/lily-sddm-plasma6"
     for installed_file in \
         Main.qml metadata.desktop theme.conf \
-        assets/wallpaper.webp assets/avatar.webp assets/avatar-circle.webp \
+        assets/wallpaper.webp \
         assets/preview.png assets/icons/check.svg \
         LICENSE; do
         if [[ ! -f "$theme_dir/$installed_file" && \

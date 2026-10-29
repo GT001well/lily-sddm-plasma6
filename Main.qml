@@ -110,7 +110,7 @@ Rectangle {
 
     function userIconSource(path) {
         if (!path)
-            return Qt.resolvedUrl("assets/avatar.webp");
+            return "";
 
         if (path.indexOf("://") >= 0 || path.charAt(0) === "/")
             return path;
@@ -669,7 +669,7 @@ Rectangle {
                             height: 112
                             anchors.centerIn: parent
                             visible: false
-                            source: root.currentUserAvatar === "" ? Qt.resolvedUrl("assets/avatar.webp") : root.userIconSource(root.currentUserAvatar)
+                            source: root.currentUserAvatar === "" ? "" : root.userIconSource(root.currentUserAvatar)
                             fillMode: Image.PreserveAspectCrop
                             sourceSize.width: 112
                             sourceSize.height: 112
@@ -691,21 +691,9 @@ Rectangle {
                             visible: !root.previewWithoutBackground && GraphicsInfo.api !== GraphicsInfo.Software && avatarImage.status === Image.Ready
                         }
 
-                        Image {
-                            width: 112
-                            height: 112
-                            anchors.centerIn: parent
-                            visible: root.previewWithoutBackground
-                            source: Qt.resolvedUrl("assets/avatar-circle.webp")
-                            fillMode: Image.PreserveAspectFit
-                            sourceSize.width: 112
-                            sourceSize.height: 112
-                            smooth: true
-                        }
-
                         Text {
                             anchors.centerIn: parent
-                            visible: !root.previewWithoutBackground && (!avatarEffect.visible || avatarImage.status !== Image.Ready)
+                            visible: !avatarEffect.visible || avatarImage.status !== Image.Ready
                             text: root.currentUserDisplayName.length > 0 ? root.currentUserDisplayName.charAt(0).toUpperCase() : "?"
                             color: root.accentColor
                             font.family: root.fontFamily

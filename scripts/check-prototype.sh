@@ -20,10 +20,6 @@ if [[ ! -f "$project_dir/assets/wallpaper.webp" ]]; then
     fail "assets/wallpaper.webp is missing"
 fi
 
-if [[ ! -f "$project_dir/assets/avatar.webp" ]]; then
-    fail "assets/avatar.webp is missing"
-fi
-
 if command -v node >/dev/null 2>&1 && [[ -f "$prototype_dir/app.js" ]]; then
     node --check "$prototype_dir/app.js" || failed=1
 fi
@@ -69,8 +65,8 @@ if [[ -f "$prototype_dir/styles.css" ]]; then
 fi
 
 if [[ -f "$prototype_dir/index.html" ]]; then
-    rg -Fq 'src="../assets/avatar.webp"' "$prototype_dir/index.html" ||
-        fail "avatar asset is not referenced by the prototype"
+    rg -Fq 'id="avatar-fallback"' "$prototype_dir/index.html" ||
+        fail "avatar initial fallback is missing from the prototype"
 
     duplicate_ids="$(
         rg -o 'id="[^"]+"' "$prototype_dir/index.html" |

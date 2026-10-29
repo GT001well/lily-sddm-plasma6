@@ -15,6 +15,6 @@ pkgbase = lily-sddm-plasma6
 	optdepends = noto-fonts-cjk: preferred login-screen font
 	options = !strip
 	source = lily-sddm-plasma6-0.2.3.tar.gz::https://github.com/GT001well/lily-sddm-plasma6/releases/download/v0.2.3/lily-sddm-plasma6-0.2.3.tar.gz
-	sha256sums = 8f97acc38fb2d40c300b01a17d40f3662a67d0b02158be0d13fc934d4f6f4ab1
+	sha256sums = 84428910754c06e990d171f5af8f5fc9614522b90252c3d06f41e37cd4147110
 
 pkgname = lily-sddm-plasma6

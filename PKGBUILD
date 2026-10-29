@@ -16,7 +16,7 @@ optdepends=(
 changelog=CHANGELOG.md
 
 source=("$pkgname-$pkgver.tar.gz::$url/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz")
-sha256sums=('8f97acc38fb2d40c300b01a17d40f3662a67d0b02158be0d13fc934d4f6f4ab1')
+sha256sums=('84428910754c06e990d171f5af8f5fc9614522b90252c3d06f41e37cd4147110')
 
 check() {
     make -C "$srcdir/$pkgname-$pkgver" check

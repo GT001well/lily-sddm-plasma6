@@ -33,7 +33,7 @@ install:
 	install -m644 Main.qml metadata.desktop theme.conf "$(THEME_DIR)/"
 	install -m644 assets/*.webp assets/*.png "$(THEME_DIR)/assets/"
 	install -m644 assets/icons/*.svg "$(THEME_DIR)/assets/icons/"
-	install -m644 README.md CHANGELOG.md "$(DOC_DIR)/"
+	install -m644 README.md README.en.md CHANGELOG.md "$(DOC_DIR)/"
 	install -m644 LICENSE "$(LICENSE_DIR)/LICENSE"
 
 dist:

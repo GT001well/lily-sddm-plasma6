@@ -1,5 +1,7 @@
 # Lily SDDM
 
+[English](README.en.md)
+
 这是一个我自用的 SDDM 主题，为 Plasma 6 兼容设计。
 主题主体色可以根据当前壁纸自动设定，让登录界面与背景保持协调。
 

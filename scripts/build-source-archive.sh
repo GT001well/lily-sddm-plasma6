@@ -18,7 +18,7 @@ mkdir -p "$source_dir" "$project_dir/dist"
 
 for source in \
     Main.qml metadata.desktop theme.conf Makefile PKGBUILD \
-    README.md CHANGELOG.md LICENSE \
+    README.md README.en.md CHANGELOG.md LICENSE \
     assets docs NOTE prototype scripts debian packaging; do
     cp -a "$project_dir/$source" "$source_dir/"
 done

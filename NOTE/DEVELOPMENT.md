@@ -91,18 +91,20 @@ make render-preview
 
 ## 发布检查清单
 
-1. 运行 `make check`。
-2. 运行 `make render-preview`，确认两份预览已同步更新。
-3. 运行 `make dist` 生成发行源码归档。
-4. 构建并检查 Arch、Debian、Fedora 和 openSUSE 四套包。
-5. 在目标分辨率和显示缩放下进行预览。
-6. 验证单用户、多用户和免密码账户行为。
-7. 验证密码错误、会话选择以及回车登录。
-8. 验证关机、重启、休眠按钮在支持时是否正确显示。
-9. 修改 SDDM 当前主题前，先在 TTY 中完成受控测试。
-10. 同步 `CHANGELOG.md`、`PKGBUILD`、`metadata.desktop`、Debian changelog
-    和 RPM spec 中的版本号。
-11. 验证 KCM 预览、许可证元数据与正文，并确认默认壁纸署名完整。
-12. 确认 `NOTE/DESIGN_SPEC.md`、`NOTE/DEVELOPMENT.md` 和
-   `prototype/README.md` 与实际原型一致。
+1. 同步 `CHANGELOG.md`、`PKGBUILD`、`metadata.desktop`、Debian changelog
+   和 RPM spec 中的版本号。
+2. 运行 `make check`。
+3. 运行 `make render-preview`，确认两份预览已同步更新。
+4. 运行 `make dist`，生成普通源码归档和 Debian orig 归档。
+5. 更新 `PKGBUILD` 中的发布归档 SHA-256，并重新生成 `.SRCINFO`。
+6. 创建版本 tag 和 GitHub Release，上传与校验和对应的发布归档。
+7. 构建并检查 Arch、Debian、Fedora 和 openSUSE 四套包。
+8. 在目标分辨率和显示缩放下进行预览。
+9. 验证单用户、多用户和免密码账户行为。
+10. 验证密码错误、会话选择以及回车登录。
+11. 验证关机、重启、休眠按钮在支持时是否正确显示。
+12. 修改 SDDM 当前主题前，先在 TTY 中完成受控测试。
+13. 验证 KCM 预览、许可证元数据与正文，并确认默认壁纸署名完整。
+14. 确认 `NOTE/DESIGN_SPEC.md`、`NOTE/DEVELOPMENT.md` 和
+    `prototype/README.md` 与实际原型一致。
 

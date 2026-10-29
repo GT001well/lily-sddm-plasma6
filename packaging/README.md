@@ -24,14 +24,27 @@ sudo pacman -U lily-sddm-plasma6-*.pkg.tar.zst
 
 ## AUR
 
-`PKGBUILD` 使用 `https://github.com/GT001well/lily-sddm-plasma6` 的版本发布
-资产。发布 `v0.2.3` 时必须上传 `make dist` 生成的
-`dist/lily-sddm-plasma6-0.2.3.tar.gz`，并确保 `sha256sums` 与该文件一致。
-提交 AUR 前运行：
+`PKGBUILD` 的 `source` 指向 GitHub Release 中的版本归档。发布前按顺序执行：
+
+```bash
+make check
+make render-preview
+make dist
+version="$(sed -n 's/^Version=//p' metadata.desktop)"
+sha256sum "dist/lily-sddm-plasma6-${version}.tar.gz"
+```
+
+1. 确认 `metadata.desktop`、`PKGBUILD`、Debian changelog 和 RPM spec 的版本一致。
+2. 重新生成归档后，将上一步输出的 SHA-256 写入 `PKGBUILD` 的 `sha256sums`。
+3. 在 GitHub 创建对应的版本 tag 和 Release，并上传第 2 步生成的文件。
+4. 重新生成 AUR 元数据：
 
 ```bash
 makepkg --printsrcinfo > .SRCINFO
 ```
+
+发布归档不包含根 `PKGBUILD`，因此校验和不会发生自引用。提交 AUR 前应确认
+`source` URL 可匿名下载、校验和匹配，并在干净构建目录中运行一次 `makepkg -f`。
 
 ## Debian / Ubuntu / KDE neon
 
@@ -40,7 +53,7 @@ makepkg --printsrcinfo > .SRCINFO
 ```bash
 sudo apt install debhelper dpkg-dev make ripgrep
 make dist-debian
-cp dist/lily-sddm-plasma6_0.2.3.orig.tar.gz ..
+cp dist/lily-sddm-plasma6_*.orig.tar.gz ..
 dpkg-buildpackage -us -uc -b
 sudo apt install ../lily-sddm-plasma6_*.deb
 ```

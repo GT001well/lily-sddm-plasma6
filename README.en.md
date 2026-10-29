@@ -89,19 +89,14 @@ makepkg -f
 sudo pacman -U lily-sddm-plasma6-*-any.pkg.tar.zst
 ```
 
-Before publishing to the AUR, upload `lily-sddm-plasma6-0.2.3.tar.gz` to the
-GitHub release with the same version. The `PKGBUILD` source and checksum point
-to that release asset. Generate AUR metadata with
-`makepkg --printsrcinfo > .SRCINFO`.
-
 ### Debian, Ubuntu, KDE neon
 
 ```bash
 sudo apt install debhelper dpkg-dev make ripgrep
 make dist-debian
-cp dist/lily-sddm-plasma6_0.2.3.orig.tar.gz ..
+cp dist/lily-sddm-plasma6_*.orig.tar.gz ..
 dpkg-buildpackage -us -uc -b
-sudo apt install ../lily-sddm-plasma6_0.2.3-1_all.deb
+sudo apt install ../lily-sddm-plasma6_*_all.deb
 ```
 
 This requires Plasma 6 and a Qt 6 SDDM on the target system. Plasma 5
@@ -114,7 +109,7 @@ sudo dnf install rpm-build make ripgrep qt6-qtdeclarative-devel
 make dist
 rpmbuild -ba packaging/rpm/lily-sddm-plasma6.spec \
     --define "_sourcedir $PWD/dist"
-sudo dnf install ~/rpmbuild/RPMS/noarch/lily-sddm-plasma6-0.2.3-*.rpm
+sudo dnf install ~/rpmbuild/RPMS/noarch/lily-sddm-plasma6-*.rpm
 ```
 
 ### openSUSE
@@ -124,10 +119,11 @@ sudo zypper install rpm-build make ripgrep qt6-declarative-devel
 make dist
 rpmbuild -ba packaging/rpm/lily-sddm-plasma6.spec \
     --define "_sourcedir $PWD/dist"
-sudo zypper install ~/rpmbuild/RPMS/noarch/lily-sddm-plasma6-0.2.3-*.rpm
+sudo zypper install ~/rpmbuild/RPMS/noarch/lily-sddm-plasma6-*.rpm
 ```
 
-Packaging requirements, checks and source archive details are in
+Packaging requirements, checks, source archives and the AUR release process
+are documented in
 [packaging/README.md](packaging/README.md).
 After installation, select the Lily theme under "Login Screen (SDDM)" in
 Plasma System Settings. The theme preview comes from `assets/preview.png`

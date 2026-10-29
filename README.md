@@ -68,18 +68,14 @@ makepkg -f
 sudo pacman -U lily-sddm-plasma6-*-any.pkg.tar.zst
 ```
 
-发布到 AUR 前，需要先在同一版本的 GitHub Release 中上传
-`lily-sddm-plasma6-0.2.3.tar.gz`。`PKGBUILD` 的 `source` 和校验和指向该发布
-资产；可使用 `makepkg --printsrcinfo > .SRCINFO` 生成 AUR 元数据。
-
 ### Debian、Ubuntu、KDE neon
 
 ```bash
 sudo apt install debhelper dpkg-dev make ripgrep
 make dist-debian
-cp dist/lily-sddm-plasma6_0.2.3.orig.tar.gz ..
+cp dist/lily-sddm-plasma6_*.orig.tar.gz ..
 dpkg-buildpackage -us -uc -b
-sudo apt install ../lily-sddm-plasma6_0.2.3-1_all.deb
+sudo apt install ../lily-sddm-plasma6_*_all.deb
 ```
 
 该方式要求目标发行版已提供 Plasma 6 和 Qt 6 SDDM。旧版 Plasma 5 系统不适用。
@@ -91,7 +87,7 @@ sudo dnf install rpm-build make ripgrep qt6-qtdeclarative-devel
 make dist
 rpmbuild -ba packaging/rpm/lily-sddm-plasma6.spec \
     --define "_sourcedir $PWD/dist"
-sudo dnf install ~/rpmbuild/RPMS/noarch/lily-sddm-plasma6-0.2.3-*.rpm
+sudo dnf install ~/rpmbuild/RPMS/noarch/lily-sddm-plasma6-*.rpm
 ```
 
 ### openSUSE
@@ -101,10 +97,10 @@ sudo zypper install rpm-build make ripgrep qt6-declarative-devel
 make dist
 rpmbuild -ba packaging/rpm/lily-sddm-plasma6.spec \
     --define "_sourcedir $PWD/dist"
-sudo zypper install ~/rpmbuild/RPMS/noarch/lily-sddm-plasma6-0.2.3-*.rpm
+sudo zypper install ~/rpmbuild/RPMS/noarch/lily-sddm-plasma6-*.rpm
 ```
 
-完整的打包依赖、检查和源码归档说明见
+完整的打包依赖、检查、源码归档和 AUR 发布流程见
 [packaging/README.md](packaging/README.md)。
 安装后在 Plasma 的“登录屏幕（SDDM）”中选择 Lily 主题。
 主题预览来自包内 `assets/preview.png`。

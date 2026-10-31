@@ -76,13 +76,6 @@ if [[ -f "$metadata" ]]; then
         fail "metadata.desktop screenshot is missing: $screenshot_path"
     fi
 
-    metadata_version="$(sed -n 's/^Version=//p' "$metadata" | head -n 1)"
-    if [[ -f "$project_dir/PKGBUILD" ]]; then
-        package_version="$(sed -n 's/^pkgver=//p' "$project_dir/PKGBUILD" | head -n 1)"
-        if [[ -n "$metadata_version" && -n "$package_version" && "$metadata_version" != "$package_version" ]]; then
-            fail "metadata.desktop and PKGBUILD versions differ: $metadata_version != $package_version"
-        fi
-    fi
 fi
 
 require_file "$theme_conf" "theme.conf is missing"

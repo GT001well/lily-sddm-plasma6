@@ -17,39 +17,10 @@ require_file() {
     fi
 }
 
-require_executable() {
-    local path="$1"
-    local message="$2"
-    if [[ ! -x "$path" ]]; then
-        fail "$message"
-    fi
-}
-
 require_absent() {
     local path="$1"
     local message="$2"
     if [[ -e "$path" ]]; then
-        fail "$message"
-    fi
-}
-
-require_one_of() {
-    local message="$1"
-    shift
-    local path
-    for path in "$@"; do
-        if [[ -f "$path" ]]; then
-            return
-        fi
-    done
-    fail "$message"
-}
-
-require_match() {
-    local path="$1"
-    local pattern="$2"
-    local message="$3"
-    if ! rg -q -- "$pattern" "$path"; then
         fail "$message"
     fi
 }

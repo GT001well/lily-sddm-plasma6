@@ -4,6 +4,10 @@ A frosted-glass login theme for SDDM, built for Plasma 6 and Qt 6.
 The accent color is derived from the current wallpaper, so the login screen
 stays in tune with the background.
 
+After upgrading Plasma from 6.7.5 to 6.8, the previously configured SDDM theme
+stopped working and the login screen fell back to the original SDDM interface.
+This theme was rebuilt and is maintained for my own needs.
+
 [中文说明](README.md)
 
 ## Preview
@@ -13,133 +17,55 @@ stays in tune with the background.
 ## Contents
 
 - [Preview](#preview)
-- [Project layout](#project-layout)
+- [Common commands](#common-commands)
 - [Installation](#installation)
-- [Changing the wallpaper](#changing-the-wallpaper)
 - [Compatibility and dependencies](#compatibility-and-dependencies)
 - [License](#license)
 
-## Project layout
+## Common commands
 
-```text
-Main.qml                  theme UI and login logic
-theme.conf                colors, fonts and asset paths
-metadata.desktop          SDDM theme metadata
-Makefile                  checks, installation, previews and release targets
-PKGBUILD                  Arch packaging script
-CHANGELOG.md              version history
-debian/                   Debian, Ubuntu and KDE neon packaging metadata
-packaging/
-  README.md               distribution packaging notes
-  rpm/lily-sddm-plasma6.spec
-                          Fedora and openSUSE RPM spec
-assets/
-  wallpaper.webp          default wallpaper
-  preview.png             lightweight KCM preview
-  icons/                  theme SVG icons
-prototype/
-  index.html              HTML layout prototype
-  styles.css              prototype visuals and motion
-  app.js                  prototype interactions
-NOTE/
-  DESIGN_SPEC.md          visual and layout specification
-  DEVELOPMENT.md          compatibility, preview and release notes
-docs/preview.png          full-size preview
-scripts/
-  lib-check.sh            shared check helpers
-  check-theme.sh          QML, metadata and asset checks
-  check-packaging.sh      packaging metadata and install-tree checks
-  check-prototype.sh      HTML/CSS/JavaScript checks
-  check-layout.py         multi-resolution layout checks
-  preview.sh              SDDM greeter test preview
-  preview-prototype.sh    HTML prototype preview
-  render-previews.sh      render full and KCM previews
-  render-qml-preview.py   offscreen renderer
-  build-source-archive.sh general source archive
-  build-debian-orig.sh    Debian orig archive
-LICENSE                   GPL-3.0-or-later license text
-LICENSES/
-  CC-BY-SA-4.0.txt        default wallpaper license text
-```
+Run `make` or `make help` to list every available entry point:
+
+| Command | Purpose |
+| --- | --- |
+| `make check` | Check the theme, prototype and multi-resolution layout |
+| `make check-layout` | Run only the multi-resolution layout checks |
+| `make preview` | Preview with the real SDDM Qt 6 greeter |
+| `make prototype` | Open the HTML layout prototype |
+| `make render-preview` | Regenerate the full and KCM previews |
+| `make install` | Install the theme; honors `PREFIX` and `DESTDIR` |
 
 ## Installation
 
-Four distribution families are supported:
+The project does not maintain distribution package metadata. Install it
+directly from source. The target system must provide Plasma 6, Qt 6 SDDM,
+the Qt Quick Effects QML module and the Qt SVG image plugin. Distribution
+packages can be built separately according to each distribution's rules.
 
-- Arch, Manjaro, EndeavourOS: use the `PKGBUILD` in the repository root.
-- Debian, Ubuntu, KDE neon: build a DEB with the metadata in `debian/`.
-- Fedora: build an RPM with `packaging/rpm/lily-sddm-plasma6.spec`.
-- openSUSE: use the SUSE conditional branch of the same RPM spec.
+Builds and login tests have only been run on Arch, Plasma 6, Qt 6.12 and
+SDDM 0.21.
 
-> Builds and login tests have only been run on Arch, Plasma 6, Qt 6.12 and
-> SDDM 0.21. The Debian, Fedora and openSUSE metadata is provided but still
-> needs package names, installation and SDDM login verified on those systems.
-
-### Arch family
+Run the checks before installation:
 
 ```bash
 make check
-makepkg -si
 ```
 
-To build the package and install it manually:
+Install directly into the system directories:
 
 ```bash
-makepkg -f
-sudo pacman -U lily-sddm-plasma6-*-any.pkg.tar.zst
+sudo make install
 ```
 
-### Debian, Ubuntu, KDE neon
+To stage the installation first:
 
 ```bash
-sudo apt install debhelper dpkg-dev make ripgrep
-make dist-debian
-cp dist/lily-sddm-plasma6_*.orig.tar.gz ..
-dpkg-buildpackage -us -uc -b
-sudo apt install ../lily-sddm-plasma6_*_all.deb
+make install DESTDIR="$PWD/stage" PREFIX=/usr
 ```
 
-This requires Plasma 6 and a Qt 6 SDDM on the target system. Plasma 5
-installations are not supported.
-
-### Fedora
-
-```bash
-sudo dnf install rpm-build make ripgrep qt6-qtdeclarative-devel
-make dist
-rpmbuild -ba packaging/rpm/lily-sddm-plasma6.spec \
-    --define "_sourcedir $PWD/dist"
-sudo dnf install ~/rpmbuild/RPMS/noarch/lily-sddm-plasma6-*.rpm
-```
-
-### openSUSE
-
-```bash
-sudo zypper install rpm-build make ripgrep qt6-declarative-devel
-make dist
-rpmbuild -ba packaging/rpm/lily-sddm-plasma6.spec \
-    --define "_sourcedir $PWD/dist"
-sudo zypper install ~/rpmbuild/RPMS/noarch/lily-sddm-plasma6-*.rpm
-```
-
-Packaging requirements, checks, source archives and the AUR release process
-are documented in
-[packaging/README.md](packaging/README.md).
 After installation, select the Lily theme under "Login Screen (SDDM)" in
-Plasma System Settings. The theme preview comes from `assets/preview.png`
-inside the package.
-
-## Changing the wallpaper
-
-Select the current theme and a background image under "Login Screen (SDDM)"
-in Plasma System Settings. `sddm-kcm` copies the image into the theme
-directory and writes `theme.conf.user`.
-
-The blurred side rail and the automatic colors take effect the next time the
-greeter starts.
-
-The default wallpaper is Breeze Next (Hanabi) by Krystian Zajdel, licensed
-under CC-BY-SA-4.0.
+Plasma System Settings. The theme preview comes from the installed
+`assets/preview.png`.
 
 ## Compatibility and dependencies
 
@@ -151,29 +77,30 @@ Tested environment:
 - Greeter: `/usr/bin/sddm-greeter-qt6`
 
 The Qt Quick Effects QML module and the Qt SVG image plugin are required at
-runtime. Each distribution package declares the matching dependencies.
+runtime. Install the corresponding components from the target distribution's
+software repository.
 
 The theme does not use Kirigami, PlasmaComponents, Breeze Components,
 Qt Quick Controls or `Qt5Compat.GraphicalEffects`. The blurred side rail is
 produced by `MultiEffect` at runtime.
 
-After a wallpaper is selected, the greeter samples a `64x36` thumbnail once,
-derives the accent color and the glass tint from it, and builds the
-low-saturation dark surfaces and borders of the input field, action buttons,
-session control and dialogs from the same hue. Text, error and primary button
-colors stay fixed to keep contrast. `autoColors=false` disables all automatic
-colors; `autoSurfaceColors=false` keeps the automatic accent while using the
-fixed surface colors from `theme.conf`.
+After a wallpaper is selected, the greeter samples it once at startup and
+derives the accent color, glass tint and the low-saturation dark surfaces for
+controls and dialogs. `autoColors=false` disables all automatic colors;
+`autoSurfaceColors=false` keeps the automatic accent while using the fixed
+surface colors from `theme.conf`. See
+[NOTE/DEVELOPMENT.md](NOTE/DEVELOPMENT.md) for the color sampling details.
 
-`make check` validates the four packaging metadata sets, the shared install
-tree and the license, and additionally checks the layout at 720p, 1440p, 4K,
-ultrawide and portrait when PySide6 is installed.
-`make render-preview` regenerates the full preview and the lightweight KCM
-preview with optional PySide6 and ImageMagick. It is not part of the greeter.
+When checking dependencies or compatibility, run `make check` first. It
+validates QML imports, metadata, assets and the prototype, and also checks the
+layout at 720p, 1440p, 4K, ultrawide and portrait when PySide6 is installed.
+Use `make preview` to verify rendering and interaction with the real greeter.
+`make render-preview` only regenerates preview images with optional PySide6
+and ImageMagick; it does not replace verification with the real greeter.
 
 ## License
 
 The project code and icons are licensed under `GPL-3.0-or-later`. The default
 wallpaper is Breeze Next (Hanabi) by Krystian Zajdel, licensed under
-CC-BY-SA-4.0. The full GPL text is in `LICENSE`, and packages install it to
-`/usr/share/licenses/lily-sddm-plasma6/`.
+CC-BY-SA-4.0. The full GPL text is in `LICENSE`, and `make install` places it
+under `/usr/share/licenses/lily-sddm-plasma6/`.

@@ -1,6 +1,0 @@
-Lily SDDM for Debian
-====================
-
-The theme requires SDDM with Qt 6 and the Qt Quick Effects QML module.
-After installing the package, select "Lily" from Plasma's Login Screen
-(SDDM) settings.
